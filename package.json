@@ -1,0 +1,26 @@
+{
+  "name": "den",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "cross-env TS_NODE_PROJECT=\"tsconfig-for-webpack-config.json\" webpack"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^12.0.4",
+    "@types/webpack": "^4.4.32",
+    "@types/webpack-dev-server": "^3.1.6",
+    "ts-node": "^8.2.0",
+    "tsconfig-paths": "^3.8.0",
+    "typescript": "^3.5.1",
+    "webpack-cli": "^3.3.2"
+  },
+  "dependencies": {
+    "@types/chrome": "0.0.86",
+    "cross-env": "^5.2.0",
+    "ts-loader": "^6.0.2",
+    "webpack": "^4.33.0"
+  }
+}
