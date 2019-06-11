@@ -4,7 +4,7 @@ interface IPublisherId {
     get: () => number;
 }
 
-class Utils {
+export default class Utils {
     // Генерируем случайный хеш
     public generateUUID = (rnd: number) => {
         // Функция создания какого то рандома на основе числа

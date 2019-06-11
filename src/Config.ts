@@ -1,13 +1,13 @@
 
-interface IUser {
+export interface IUser {
     name: string;
     domain: string;
-    schema: any;
-    searchType: string;
-    cookieName: string;
-    uninstallDomain: string;
-    searchDomain: string;
-    tracking: {
+    schema?: any;
+    searchType?: string;
+    cookieName?: string;
+    uninstallDomain?: string;
+    searchDomain?: string;
+    tracking?: {
         ga: string;
     };
     publisher: {
@@ -18,14 +18,14 @@ interface IUser {
         omni: {
             searchUrl: string
         };
-        cloaseStoreWindows: string;
+        cloaseStoreWindows?: string;
         handlesearchdomains: boolean,
         noinline: boolean,
         thankyoupage: boolean
     }
 }
 
-class Config {
+export default class Config {
     public extension = {
         name: "defaultext",
         domain: "defaultext.com",
