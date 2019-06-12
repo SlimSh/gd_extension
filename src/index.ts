@@ -1,14 +1,13 @@
 import Timer from './Timer';
 import Config, {IUser} from './Config';
 import mock from './mock';
+import Extension from './Extension';
 class Main {
     public config: any;
     constructor(config: IUser) {
-        this.config = new Config(config);
-        // const timer = new Timer({
-        //     coocieName: 'Denchik', callBack: () => {console.warn(this)}, period: .000001});
-        
-    }
+        this.config = config;
+        new Extension(this.config);
+    }   
 }
 
 const app = new Main(mock);

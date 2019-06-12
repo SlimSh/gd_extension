@@ -31,7 +31,7 @@ interface IStorage {
     searchParams: string;
     timers: string;
     firstTime: string;
-    firstSearch: string;
+    firstSearch: string | Date;
     firstUse: string;
     pgSTT: string;
     pgSTO: string;

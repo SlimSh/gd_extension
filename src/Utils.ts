@@ -1,10 +1,12 @@
+import Browser from './browser/Browser';
+import Config from './Config';
 interface IPublisherId {
     configurable: boolean;
     enumerable: boolean;
     get: () => number;
 }
 
-export default class Utils {
+class Utils {
     // Генерируем случайный хеш
     public generateUUID = (rnd: number) => {
         // Функция создания какого то рандома на основе числа
@@ -26,7 +28,7 @@ export default class Utils {
         const date = `${today.getDate()}`;
         return `${year}-${month[1] ? month : `0${month[0]}`}-${date[1] ? date : `0${date[0]}`}`
     }
-    public getParameterByName = (regular: RegExp, str: string) => {
+    public getParameterByName = (regular: string, str: string) => {
         
         try {
             let result: string[] = (new RegExp("[\\?&]" + regular + "=([^&#]*)")).exec(str);
@@ -46,18 +48,27 @@ export default class Utils {
     }
 
     public handleFirstSettingsChange = () => {
-        "undefined" === typeof InstallTrigger && BrowserWindows.create({
-            url: "about:blank",
-            height: 1,
-            width: 1,
-            left: 99999,
-            top: 99999,
-            focused: !0,
-            type: "popup"
-        }, (e: any) => {
-            setTimeout(function() {
-                return BrowserWindows.close(e.id)
-            }, 100)
-        })
+        // "undefined" === typeof InstallTrigger && BrowserWindows.create({
+        //     url: "about:blank",
+        //     height: 1,
+        //     width: 1,
+        //     left: 99999,
+        //     top: 99999,
+        //     focused: !0,
+        //     type: "popup"
+        // }, (e: any) => {
+        //     setTimeout(function() {
+        //         return BrowserWindows.close(e.id)
+        //     }, 100)
+        // })
     }
+
+    public getHostname = (url: string) => {
+        var b = document.createElement("a");
+        b.href = url;
+        return b.hostname
+    };
 }
+
+const utils = new Utils;
+export default utils;

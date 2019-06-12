@@ -1,3 +1,4 @@
+import mock from "./mock";
 
 export interface IUser {
     name: string;
@@ -25,7 +26,7 @@ export interface IUser {
     }
 }
 
-export default class Config {
+export class Config {
     public extension = {
         name: "defaultext",
         domain: "defaultext.com",
@@ -102,3 +103,6 @@ export default class Config {
         searchDomain && (this.search.searchDomain = searchDomain);        
     }
 }
+
+const config = new Config(mock);
+export default config;

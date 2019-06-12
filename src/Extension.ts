@@ -1,20 +1,24 @@
+import extensionData from "./configs/extensionData";
+
 import ExtensionData from './ExtensionData';
+import messageService from "./message/MessageService";
 
 export default class Extension {
-    // public init: () => void;
-    public config: any;
     public isInitialised: boolean;
+    public data: any;
+    public messageService: any;
+    public stats: any;
 
     constructor(config: any) {
-        this.config = config;
         this.init();
-        // this.start && this.start()
     }
 
     public init = () => {
         if (!this.isInitialised) {
             this.isInitialised = true;
-            this.data = new ExtensionData;
+            this.data = new ExtensionData();
+            this.messageService = messageService;
+            console.warn('Extension data', this);
         }
     }
-}
+};
