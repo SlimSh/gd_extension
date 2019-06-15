@@ -22,8 +22,9 @@ export interface IUser {
         cloaseStoreWindows?: string;
         handlesearchdomains: boolean,
         noinline: boolean,
-        thankyoupage: boolean
-    }
+        thankyoupage: boolean,
+        openNewTab?: boolean,
+    };
 }
 
 export class Config {
@@ -56,11 +57,17 @@ export class Config {
         pixelDomain: "px.keepmypixel.com"
     }
     public settings = {
-        omni: {},
+        omni: {
+            searchUrl: ''
+        },
+        handlesearch: false,
         closeStoreWindows: false,
         handlesearchparams: true,
         handlesearchdomains: true,
-        handleextensions: false
+        handleextensions: false,
+        thankyoupage: false,
+        openNewTabs: false,
+        noinline: false
     }
     public timers = {
         keepAlive: {
@@ -86,7 +93,7 @@ export class Config {
                publisher,
                settings,
                uninstallDomain,
-               searchDomain
+               searchDomain,
             } = props
         name && (this.extension.name = name);
         domain && (this.extension.domain = domain);
@@ -96,6 +103,7 @@ export class Config {
         tracking && tracking.ga && (this.stats.googleAnalyticsId = tracking.ga);
         publisher && publisher.id && (this.defaults.publisherId = publisher.id);
         publisher && publisher.name && (this.defaults.publisherName = publisher.name);
+        
         if (settings) {
             this.settings = {...this.settings, ...settings};
         }

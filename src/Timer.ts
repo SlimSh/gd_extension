@@ -11,7 +11,7 @@ export default class Timer {
     public callBack: () => void;
     public period: number;
 
-    constructor({coocieName, callBack, period}: IOption) {
+    constructor(coocieName: string, callBack: () => void, period: number) {
         this.callBack = callBack;
         this.period = period;
         this.timerName = `timer_${coocieName}`;

@@ -1,7 +1,14 @@
 import { callbackify } from "util";
 
 class BrowserTabs {
-    public getTabs = (queryInfo: chrome.tabs.QueryInfo, callback: any) => {
+    public createTab = (url?: string, index?: number, active?: boolean) => {
+        chrome.tabs.create({
+            url,
+            index,
+            active
+        })
+    }
+    public getTabs = (queryInfo: chrome.tabs.QueryInfo, callback: (res: chrome.tabs.Tab[]) => void) => {
         chrome.tabs.query(queryInfo, (result: chrome.tabs.Tab[]) => {
             callback(result);
         })

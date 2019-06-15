@@ -30,7 +30,7 @@ interface IStorage {
     installDate: string;
     searchParams: string;
     timers: string;
-    firstTime: string;
+    firstTime: any;
     firstSearch: string | Date;
     firstUse: string;
     pgSTT: string;

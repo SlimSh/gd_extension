@@ -32,7 +32,7 @@ class SearchUtils {
             })
         })
     }
-    public buildSearchUrl = (protocol: 'http' | 'https', domain: string, gets: string, device: IDevice | any) => {
+    public buildSearchUrl = (protocol: string, domain: string, gets: string, device: IDevice | any) => {
         let url = `${protocol}://${domain}/?${gets}`;
         for (const key in device) {
             url = url.replace(`{${key}}`, encodeURIComponent(device[key]))
@@ -89,7 +89,7 @@ class SearchUtils {
 
         });
     }
-    public handleSearch = (urls: string | string[], searchUrl: string, callback: () => void ) => {
+    public handleSearch = (urls: string | string[], searchUrl: string, callback?: () => void ) => {
         Browser.handleBeforeRequest(urls, (details: chrome.webRequest.WebRequestBodyDetails) => {
             return Browser.searchFromRequest(details, searchUrl, callback);
         })

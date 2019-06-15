@@ -1,7 +1,8 @@
 import store from './StorageManager';
-import extensionData from './configs/extensionData';
+import storeData from './configs/storeData';
 import Utils from './Utils';
 import Config from './Config';
+import BrowserCookies from './browser/BrowserCookies';
 // import {IDevice} from './utils/SearchUtils';
 export interface IDeviceConfig {
     deviceId: string;
@@ -20,18 +21,18 @@ export default class ExtensionData {
     public data: any;
     
     constructor() {
-        this.data = extensionData;
+        this.data = storeData;
      }
 
-    public init = (config: any) => {
+    public init = (callback: () => void) => {
         this.installDate || store.set(store.keys.installDate, Utils.getToday());
         let isCountry = 'TJ' === this.data.country;
         let isPublisherId = !this.data.publisherId;
 
     }
 
-    public writeCookies = (device: IDeviceConfig, b:any) => {
-        const deviceConf = {
+    public writeCookies = (device: IDeviceConfig, option:string) => {
+        const deviceConf: any = {
             DeviceID: device.deviceId,
             Country: device.country,
             PID: device.publisherId,
@@ -45,7 +46,15 @@ export default class ExtensionData {
             PgSTT: device.pgSTT,
             lpDetails: device.lpDetails
         };
-        let c = Config.search.schema 
+        let configUrl = `${Config.search.schema}://.${Config.extension.domain}`;
+        let {searchParams} = Config.search;
+        let key = null;
+        for (key in deviceConf) {
+            searchParams = searchParams.replace(`{${key}}`, encodeURIComponent(deviceConf[key] || ''));
+        }
+        searchParams += `&${option}`;
+        BrowserCookies.remove(configUrl);
+        BrowserCookies.set(configUrl, option);
     }
 
 };

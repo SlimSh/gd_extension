@@ -2,8 +2,8 @@ import Config from "../Config";
 
 class BrowserCookies {
     public config: any;
-    constructor(props: any) {
-        this.config = props;
+    constructor() {
+        this.config = Config;
     }
 
     public set (url: string, value: any) {
@@ -36,3 +36,6 @@ class BrowserCookies {
         })
     }
 }
+
+const browserCookies = new BrowserCookies();
+export default browserCookies;
