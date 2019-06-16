@@ -8,7 +8,7 @@ interface IPublisherId {
 
 class Utils {
     // Генерируем случайный хеш
-    public generateUUID = (rnd: number) => {
+    public generateUUID = (rnd?: number) => {
         // Функция создания какого то рандома на основе числа
         const localRnd = (rnd: number) => (Math.random() * (1 << (rnd << 2)) ^ Date.now() | 0).toString(16).slice(-rnd);
         return [localRnd(4) + localRnd(4), localRnd(4), "4" + localRnd(3), (4 * Math.random() | 8).toString(16) + localRnd(3), Date.now().toString(16).slice(-10) + localRnd(2)].join("-")
@@ -16,7 +16,7 @@ class Utils {
     // Вот тут уже интереснее, функция вроде бы как 
     // называет отступ но на вход принимает publisherId
     // который в свою очередь берется из сторика
-    public paddiing = (publisherId: IPublisherId, num: number) => {
+    public padding = (publisherId: IPublisherId, num: number) => {
         const maxSize = num - publisherId.toString().length + 1;
         return Array(+(0<maxSize && maxSize)).join("0") + publisherId;
     }

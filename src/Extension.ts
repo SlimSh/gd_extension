@@ -1,6 +1,4 @@
-import extensionData from "./configs/storeData";
-
-import ExtensionData from './ExtensionData';
+import extData, {ExtensionData as ExtDataClass} from './ExtensionData';
 import messageService from "./message/MessageService";
 import Timer from "./Timer";
 import Config from './Config';
@@ -25,7 +23,7 @@ export default class Extension {
     public setCookies: any;
 
     constructor(config: any) {
-        extensionData.init(() => {
+        extData.init(() => {
             this.init();
         })
     }
@@ -33,7 +31,7 @@ export default class Extension {
     public init = () => {
         if (!this.isInitialised) {
             this.isInitialised = true;
-            this.data = new ExtensionData();
+            this.data = new ExtDataClass();
             this.messageService = messageService;
             this.stats = new Stats(this.data);
             this.hooks = new HookManager();

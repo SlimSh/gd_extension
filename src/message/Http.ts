@@ -8,14 +8,14 @@ export class Http {
         c.open("GET", url, true);
         c.send()
     };
-    public getJson = (url: string, b: any) => {
-        b = void 0 === b ? () => {} : b;
+    public getJson = (url: string, callback: any) => {
+        callback = void 0 === callback ? () => {} : callback;
         this.get(url, (jsnres: any) => {
             var c = {};
             try {
                 c = JSON.parse(jsnres)
             } catch (e) {}
-            b(c)
+            callback(c)
         })
     }
     public post = (url: string, b='', contentType='', callback = (event: any, ev?: Event) => {}) => {

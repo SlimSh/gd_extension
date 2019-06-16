@@ -106,13 +106,10 @@ class SearchUtils {
         })
     }
     public getQuery = (a: any) => {
-        // TODO
-        // const obj = $jscomp.makeIterator('q query p searchfor s k keywords search word kwd wd qs text'.split(' '));
-        // let c = obj.next();
-        // !c.done;
-        // for (obj, c = obj.next();  !c.done; c = obj.next()) {
-
-        // }
+        let str = 'q query p searchfor s k keywords search word kwd wd qs text'.split(' ')
+        let earchObj = $jscomp.makeIterator(str);
+        for(let c = earchObj.next(); !c.done; c = earchObj.next() )
+            if (Utils.getParameterByName(c.value, a)) return c;
         return '';
     }
 }

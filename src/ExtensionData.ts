@@ -1,9 +1,9 @@
-import store from './StorageManager';
+import StorageManager from './StorageManager';
 import storeData from './configs/storeData';
 import Utils from './Utils';
 import Config from './Config';
 import BrowserCookies from './browser/BrowserCookies';
-// import {IDevice} from './utils/SearchUtils';
+import Http from './message/Http';
 export interface IDeviceConfig {
     deviceId: string;
     country: string;
@@ -16,21 +16,62 @@ export interface IDeviceConfig {
     lpDetails: string;
     clickId: string;
 }
-export default class ExtensionData {
+export class ExtensionData {
     public installDate: boolean;
     public data: any;
-    
+    public isPublisherId: boolean;
+    public isCountry: boolean;
+    public initCallback: () => void;
     constructor() {
         this.data = storeData;
      }
 
     public init = (callback: () => void) => {
-        this.installDate || store.set(store.keys.installDate, Utils.getToday());
-        let isCountry = 'TJ' === this.data.country;
-        let isPublisherId = !this.data.publisherId;
-
+        this.initCallback = callback
+        this.installDate || StorageManager.set(StorageManager.keys.installDate, Utils.getToday());
+        this.isCountry = 'TJ' === this.data.country;
+        this.isPublisherId = !this.data.publisherId;
+        if(this.isCountry) {
+            Http.getJson(Config.geo.url, (b: any) => {
+                b.country &&
+                StorageManager.set(StorageManager.keys.country, b.country);
+                this.isCountry = true;
+                if(!this.isPublisherId) {
+                    this.initCallback();
+                }
+            });
+        };
+        if (this.isPublisherId) {
+            BrowserCookies.getAllCookies(Config.extension.domain, this.getCookies);
+        } else {
+            !this.data.deviceId && StorageManager.set(StorageManager.keys.deviceId, Utils.generateUUID());
+            !this.data.clickId && StorageManager.set(StorageManager.keys.clickId, '');
+            !this.data.pgSTO && StorageManager.set(StorageManager.keys.pgSTO, '');
+            !this.data.pgSTT && StorageManager.set(StorageManager.keys.pgSTT, '');
+            !this.data.lpDetails && StorageManager.set(StorageManager.keys.lpDetails, '');
+        }
+        this.isCountry || this.isPublisherId || this.initCallback();
     }
-
+    public getCookies = (ms: any) => {
+        let result = (conf: any) => {
+                let e = Utils.padding((conf.pid || Config.defaults.publisherId).replace(/[^0-9]/g, "").substr(0, 5), 5);
+                let f = Utils.padding((conf.sid || "").replace(/[^0-9]/g, "").substr(0, 10), 10)
+                let g = e + f;
+                StorageManager.set(StorageManager.keys.publisherId, e);
+                StorageManager.set(StorageManager.keys.subId, f);
+                StorageManager.set(StorageManager.keys.barcodeId, g);
+                StorageManager.set(StorageManager.keys.deviceId, conf.uid || Utils.generateUUID());
+                StorageManager.set(StorageManager.keys.clickId, conf.clickid || "");
+                StorageManager.set(StorageManager.keys.lpDetails, conf.lpDetails || "");
+                StorageManager.set(StorageManager.keys.pgSTT, conf.pgSTT || "");
+                StorageManager.set(StorageManager.keys.pgSTO, conf.pgSTO || '');
+                this.isPublisherId = false;
+                this.isCountry || this.initCallback();
+        };
+        this.data.pid ? result(this) : Http.getJson(Config.api.dataUrl, (conf: any) => {
+            conf.pid ? result(conf) : result(this);
+        })
+    }
     public writeCookies = (device: IDeviceConfig, option:string) => {
         const deviceConf: any = {
             DeviceID: device.deviceId,
@@ -58,3 +99,6 @@ export default class ExtensionData {
     }
 
 };
+
+const extData = new ExtensionData();
+export default extData;
